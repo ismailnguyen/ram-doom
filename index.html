@@ -61,14 +61,46 @@
                 right: 0;
             }
 
+            button:after{
+                position: absolute;
+                content: "";
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 100%;
+                transition: all .35s;
+            }
+
+            button span {
+                position: relative;
+                z-index: 2;
+            }
+
+            button:hover:after{
+                width: 100%;
+            }
+            
+            button#start:hover,
+            button#shuffler:hover {
+                color: white;
+            }
+
             button#start {
                 color: greenyellow;
                 border: 2px solid greenyellow;
             }
 
+            button#start:after{
+                background: greenyellow;
+            }
+
             button#shuffler {
                 color: tomato;
                 border: 2px solid tomato;
+            }
+
+            button#shuffler:after{
+                background: tomato;
             }
 
             #noArg {
@@ -364,7 +396,7 @@
             <p>
                 <textarea id="values" placeholder="Enter values separated by comma"></textarea>
             </p>
-            <button id="start">Start</button>
+            <button id="start"><span>Start</span></button>
         </div>
         <div id="withArg">
             <div class="night">
@@ -390,7 +422,7 @@
                 <div class="shooting_star"></div>
             </div>
             <h1 id="text"></h1>
-            <button id="shuffler">Shuffle</button>
+            <button id="shuffler"><span>Shuffle</span></button>
         </div>
         
         <script>
