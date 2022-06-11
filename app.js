@@ -266,8 +266,12 @@ function init () {
         }
 
         location.href = window.location.pathname + '?value=' + values.join(',') + '&old=' + oldValues.join(',');
-
     });
+
+    // Make app installable
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js');
+    };
 }
 
 init();
