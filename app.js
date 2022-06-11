@@ -209,6 +209,8 @@ function init () {
     });
 
     let queryStringValues = params.value;
+
+    // First open, with no values
     if (!queryStringValues || !queryStringValues.length) {
         document.getElementById('noArg').style.display = 'block';
         if (params.old) {
@@ -228,17 +230,32 @@ function init () {
         return;
     }
 
+    let separator = ',';
+    // If there is a separator, use it
+    if (params.separator) {
+        separator = params.separator;
+    }
+
+    // If we have values, we can start
     let textElement = document.getElementById('text');
-    let values = queryStringValues.split(',').map(x => x.trim());
+    let values = queryStringValues.split(separator).map(x => x.trim());
     let randomValue = values[Math.floor(Math.random() * values.length)];
     textElement.innerHTML = randomValue;
     
-    var text = new WordShuffler(textElement, {
+    // Init text animation
+    new WordShuffler(textElement, {
         textColor : '#fff',
         timeOffset : 5
     });
 
     shuffler.addEventListener('click', function () {
+        // If in "infinite" mode, no need to remove the last used value, so just reload the page
+        if (params.infinite && params.infinite == 'true') {
+            location.reload();
+            return;
+        }
+
+        // If in "normal" mode, remove the last used value then reload the page
         const indexToRemove = values.indexOf(randomValue);
         if (indexToRemove > -1) {
             values.splice(indexToRemove, 1);
@@ -249,7 +266,7 @@ function init () {
         }
 
         location.href = window.location.pathname + '?value=' + values.join(',') + '&old=' + oldValues.join(',');
-        text.restart();
+
     });
 }
 
