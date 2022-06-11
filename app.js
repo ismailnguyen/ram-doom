@@ -267,7 +267,9 @@ function init () {
 
         location.href = window.location.pathname + '?value=' + values.join(',') + '&old=' + oldValues.join(',');
     });
+}
 
+function registerServiceWorker() {
     // Make app installable
     if('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js');
@@ -275,3 +277,4 @@ function init () {
 }
 
 init();
+registerServiceWorker();
