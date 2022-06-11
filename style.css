@@ -26,20 +26,68 @@ h1 {
     padding: 10px 0;
 }
 
+input[type="text"],
 textarea {
     font-family: monospace;
     color: white;
     border: 2px solid white;
     background: transparent;
-    width: 350px;
     font-size: 1.2em;
     padding: 10px;
     border-radius: 5px;
 }
 
-button {
+textarea {
+    width: 350px;
+}
+
+input[type="radio"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    /* Remove most all native input styles */
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: white;
+    width: 1.15em;
+    height: 1.15em;
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translateY(-0.075em);
+    place-content: center;
+  }
+  
+  input[type="radio"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em tomato;
+    /* Windows High Contrast Mode */
+    background-color: CanvasText;
+  }
+  
+  input[type="radio"]:checked {
+    background-color: #222;
+  }
+
+  input[type="radio"]:checked::before {
+    transform: scale(1);
+  }
+  
+  input[type="radio"]:focus {
+    outline: max(2px, 0.15em) solid currentColor;
+    outline-offset: max(2px, 0.15em);
+  }
+
+.action-button {
     position: absolute;
-    bottom: 10px;
+    bottom: 1rem;
     font-family: monospace;
     color: tomato;
     border: 2px solid tomato;
@@ -55,7 +103,7 @@ button {
     right: 0;
 }
 
-button:after{
+.action-button:after{
     position: absolute;
     content: "";
     top: 0;
@@ -65,35 +113,35 @@ button:after{
     transition: all .35s;
 }
 
-button span {
+.action-button span {
     position: relative;
     z-index: 2;
 }
 
-button:hover:after{
+.action-button:hover:after{
     width: 100%;
 }
 
-button#start:hover,
-button#shuffler:hover {
+.action-button#start:hover,
+.action-button#shuffler:hover {
     color: white;
 }
 
-button#start {
+.action-button#start {
     color: greenyellow;
     border: 2px solid greenyellow;
 }
 
-button#start:after{
+.action-button#start:after{
     background: greenyellow;
 }
 
-button#shuffler {
+.action-button#shuffler {
     color: tomato;
     border: 2px solid tomato;
 }
 
-button#shuffler:after{
+.action-button#shuffler:after{
     background: tomato;
 }
 
@@ -382,4 +430,62 @@ left: calc(50% - 11px);
     100% {
         transform: rotate(405deg);
     }
+}
+
+#settingsBtn {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  transition: all 0.3s ease;
+}
+#settingsBtn:hover {
+  transform: scale(1.05) rotate(90deg);
+}
+#settingsBtn:active {
+  transform: scale(1.15) rotate(90deg);
+}
+.modal {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0) translateX(-30rem) translateY(10rem);
+  transition: all 0.3s ease-out;
+  color: #2e295a;
+  background: #f36653;
+  padding: 2rem;
+  border: 4px solid rgba(241,75,53,0.85);
+}
+.modal.active {
+  top: 7rem;
+  transform: scale(1) translateX(0) translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+.modal fieldset {
+  padding: 0.8rem 1rem;
+  border-color: rgba(241,75,53,0.85);
+}
+.modal fieldset legend {
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+  font-size: 1.3rem;
+  padding: 0.2rem 0.8rem;
+  text-transform: capitalize;
+}
+.modal fieldset label {
+  text-transform: uppercase;
+}
+.modal fieldset label:nth-of-type(1) {
+  margin-right: 10px;
+}
+.modal fieldset input:checked + label {
+  font-weight: bold;
 }

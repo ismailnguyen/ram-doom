@@ -203,10 +203,56 @@ function autoResizeTextArea() {
     }
 }
 
+function OnSettingsUpdated(params) {
+    var href = window.location.pathname;
+
+    href += '?infinite=' + (document.getElementById('radio-infinite-enabled').checked ? 'true' : 'false');
+    href += '&separator=' + document.getElementById('input-separator').value;
+
+    if(params.old) {
+        href += '&old=' + params.old;
+    }
+
+    if(params.value) {
+        href += '&value=' + params.value;
+    }
+
+    location.href = href;
+}
+
+function bindSettingsButton(params) {
+    const radioInfiniteEnabled = document.getElementById('radio-infinite-enabled');
+    radioInfiniteEnabled.checked = params.infinite && params.infinite == 'true';
+    radioInfiniteEnabled.addEventListener('click', () => OnSettingsUpdated(params));
+
+    const radioInfiniteDisabled = document.getElementById('radio-infinite-disabled');
+    radioInfiniteDisabled.checked = !params.infinite || params.infinite != 'true';
+    radioInfiniteDisabled.addEventListener('click', () => OnSettingsUpdated(params));
+
+    const inputSeparator = document.getElementById('input-separator');
+    inputSeparator.value = params.separator || ',';
+    inputSeparator.addEventListener('change', () => OnSettingsUpdated(params));
+
+    const toggleModal = document.querySelector("#settingsBtn");
+    const modal = document.querySelector(".modal");
+
+    toggleModal.addEventListener('click', () => modal.classList.toggle("active"));
+}
+
+function registerServiceWorker() {
+    // Make app installable
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js');
+    }
+}
+
 function init () {
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
     });
+
+    bindSettingsButton(params);
+    registerServiceWorker();    
 
     let queryStringValues = params.value;
 
@@ -267,14 +313,9 @@ function init () {
 
         location.href = window.location.pathname + '?value=' + values.join(',') + '&old=' + oldValues.join(',');
     });
+
 }
 
-function registerServiceWorker() {
-    // Make app installable
-    if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js');
-    }
-}
-
-init();
-registerServiceWorker();
+(function() {
+    init();
+ })();
